@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<launch>
+
+    <arg name="octomap_source" default="/merged_pc" />
+
+    <include file="$(find tiago_dual_2dnav_gazebo)/launch/tiago_dual_mapping.launch">
+        <arg name="public_sim" value= "true" />
+        <arg name="end_effector_left" value="pal-gripper"/>
+        <arg name="end_effector_right" value="pal-gripper"/>
+    </include>
+
+    <include file="$(find octomap_server)/launch/octomap_mapping.launch">
+        <arg name="node_name" default="camera_scan_map" />
+        <arg name="point_cloud" value="$(arg octomap_source)"/>
+    </include>
+
+    <node pkg="key_teleop" type="key_teleop.py" name="tiago_keyboard" output="screen"></node>
+    <node pkg="tiago_3d_nav" type="tiago_3d_nav" name="merged_optical"></node>
+</launch>
